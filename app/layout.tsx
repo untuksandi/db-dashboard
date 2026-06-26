@@ -6,7 +6,7 @@ const bebas = Bebas_Neue({ weight: '400', subsets: ['latin'], variable: '--font-
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 
 export const metadata: Metadata = {
-  title: 'ASABA Project Dashboard',
+  title: 'ASABA Project Dashboard 123',
   description: 'ASABA – Real-time Project Status Dashboard',
 }
 

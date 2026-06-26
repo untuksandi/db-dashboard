@@ -7,6 +7,7 @@ import { getServiceClient } from '@/lib/supabase'
 const UPDATABLE_FIELDS = [
   'project_name',
   'region',
+  'project_value',
   'team',
   'pm',
   'stage',
@@ -38,6 +39,8 @@ const HEADER_MAP: Record<string, string> = {
   'Notes':              'notes',
   'Status':             'status',
   'Go-Live Date':       'go_live_date',
+  'Project Value (Rp)': 'project_value',
+  'Project Value':      'project_value',
 }
 
 export async function POST(req: NextRequest) {
@@ -91,6 +94,11 @@ export async function POST(req: NextRequest) {
         if (field === 'region') {
           const s = val ? String(val).trim() : ''
           val = VALID_REGIONS.has(s) ? s : null
+        }
+
+        if (field === 'project_value') {
+          const n = val === null ? null : parseFloat(String(val).replace(/[^0-9.]/g, ''))
+          val = isNaN(n as number) || n === null ? null : n
         }
 
         if (field === 'team') {

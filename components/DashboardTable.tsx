@@ -103,7 +103,7 @@ function GoLiveDateInput({ value, onSave }: { value: string; onSave: (v: string)
 
 function FlagBadge({ flag, onSave }: { flag: AttentionFlag; onSave: (v: AttentionFlag) => void }) {
   const [editing, setEditing] = useState(false)
-  const meta = FLAG_META[flag]
+  const meta = FLAG_META[flag] ?? { emoji: '❓', color: 'text-gray-500', bg: 'bg-gray-50 border-gray-200', text: flag ?? '—' }
 
   if (editing) {
     return (
@@ -205,7 +205,7 @@ function SortTh({
 function SummaryBar({ projects }: { projects: Project[] }) {
   const counts = useMemo(() => {
     const c: Record<AttentionFlag, number> = {
-      CRITICAL: 0, HIGH: 0, MONITOR: 0, 'ON TRACK': 0, CANCELLED: 0, 'ON HOLD': 0,
+      Critical: 0, High: 0, Medium: 0, Low: 0, Cancelled: 0, 'On Hold': 0, Closed: 0,
     }
     projects.forEach((p) => { c[p.attention_flag] = (c[p.attention_flag] ?? 0) + 1 })
     return c
@@ -238,7 +238,7 @@ type SortKey = 'project_name' | 'pm' | 'stage' | 'attention_flag' | 'go_live_dat
 type SortDir = 'asc' | 'desc'
 
 const FLAG_ORDER: Record<AttentionFlag, number> = {
-  CRITICAL: 0, HIGH: 1, MONITOR: 2, 'ON TRACK': 3, 'ON HOLD': 4, CANCELLED: 5,
+  Critical: 0, High: 1, Medium: 2, Low: 3, 'On Hold': 4, Cancelled: 5, Closed: 6,
 }
 
 export function DashboardTable({ projects: initial, onUpdate, onError }: Props) {
@@ -328,6 +328,17 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
 
   const hasFilters = search || filterFlag || filterPM || filterStage || filterRegion || filterTeam
 
+  const totalValue = filtered.reduce((sum, p) => sum + (p.project_value ?? 0), 0)
+
+  function formatRupiah(n: number) {
+    if (n === 0) return '—'
+    return `Rp ${Math.round(n).toLocaleString('id-ID')}`
+  }
+
+  function formatRupiahFull(n: number) {
+    return `Rp ${Math.round(n).toLocaleString('id-ID')}`
+  }
+
   return (
     <div>
       <SummaryBar projects={projects} />
@@ -396,6 +407,15 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
         </span>
       </div>
 
+      {/* Value summary bar */}
+      <div className="flex items-center gap-3 px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-sm">
+        <span className="text-teal-600 font-semibold text-xs uppercase tracking-wider">Total Project Value</span>
+        <span className="text-teal-800 font-bold text-base">{formatRupiah(totalValue)}</span>
+        {hasFilters && (
+          <span className="text-teal-400 text-xs ml-1">· filtered view</span>
+        )}
+      </div>
+
       {/* Table */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
         <table className="w-full text-sm" style={{ minWidth: '1200px', tableLayout: 'fixed' }}>
@@ -407,7 +427,7 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
             <col style={{ width: '130px' }} />      {/* PM */}
             <col style={{ width: '155px' }} />      {/* Stage */}
             <col style={{ width: '110px' }} />      {/* Flag */}
-            <col style={{ width: '130px' }} />      {/* Last Meeting */}
+            <col style={{ width: '130px' }} />      {/* Project Value */}
             <col style={{ width: '200px' }} />      {/* Key Risk */}
             <col style={{ width: '96px' }} />       {/* Go-Live */}
             <col style={{ width: '88px' }} />       {/* Status */}
@@ -421,7 +441,7 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
               <SortTh label="PM"           sk="pm"           sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortTh label="Stage"        sk="stage"        sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortTh label="Flag"         sk="attention_flag" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-400">Last Meeting</th>
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-400">Project Value (Rp)</th>
               <th className="px-3 py-3 text-left text-xs font-semibold text-gray-400">Key Risk / Issue</th>
               <SortTh label="Go-Live"      sk="go_live_date" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortTh label="Status"       sk="status"       sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
@@ -465,8 +485,8 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
                       onSave={(v) => handleUpdate(p.id, 'attention_flag', v)}
                     />
                   </td>
-                  <td className="px-3 py-2.5 text-xs text-gray-500 overflow-hidden">
-                    <span className="block truncate">{p.last_meeting || '—'}</span>
+                  <td className="px-3 py-2.5 text-xs text-teal-700 font-medium overflow-hidden">
+                    <span className="block truncate">{p.project_value ? formatRupiah(p.project_value) : '—'}</span>
                   </td>
                   <td className="px-3 py-2.5 text-xs text-gray-600 overflow-hidden">
                     <span className="line-clamp-2">{p.key_risk || '—'}</span>
@@ -546,6 +566,16 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
                             <GoLiveDateInput
                               value={p.go_live_date ?? ''}
                               onSave={(v) => handleUpdate(p.id, 'go_live_date', v || null)}
+                            />
+                          </div>
+                        </div>
+                        {/* Project Value (editable) */}
+                        <div>
+                          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Project Value (Rp)</div>
+                          <div onClick={(e) => e.stopPropagation()}>
+                            <InlineCell
+                              value={p.project_value != null && p.project_value > 0 ? formatRupiah(p.project_value) : ''}
+                              onSave={(v) => handleUpdate(p.id, 'project_value', v ? (parseFloat(v.replace(/[^0-9]/g, '')) || null) : null)}
                             />
                           </div>
                         </div>

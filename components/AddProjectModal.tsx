@@ -21,6 +21,7 @@ const EMPTY = {
   key_risk: '',
   notes: '',
   status: 'Normal' as ProjectStatus,
+  project_value: '' as string,
   risks: [] as import('@/lib/supabase').RiskRow[],
   phases: [] as import('@/lib/supabase').PhaseRow[],
 }
@@ -45,6 +46,7 @@ export function AddProjectModal({ onClose, onCreated }: Props) {
         ...form,
         region: form.region || null,
         go_live_date: form.go_live_date || null,
+        project_value: form.project_value ? parseFloat(form.project_value.replace(/[^0-9.]/g, '')) || null : null,
       }
       const res = await fetch('/api/projects', {
         method: 'POST',
@@ -162,6 +164,18 @@ export function AddProjectModal({ onClose, onCreated }: Props) {
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
               />
             </div>
+          </div>
+
+          {/* Project Value */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Project Value (Rp)</label>
+            <input
+              type="text"
+              value={form.project_value}
+              onChange={(e) => set('project_value', e.target.value)}
+              placeholder="e.g. 500000000"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400"
+            />
           </div>
 
           {/* Last Meeting */}

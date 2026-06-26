@@ -141,8 +141,8 @@ export function AnalyticsDashboard({ projects }: { projects: Project[] }) {
     const stageCounts = countBy(projects, (p) => p.stage)
     const pmCounts = countBy(projects, (p) => p.pm || 'Unassigned')
 
-    const onTrack = flagCounts['ON TRACK'] ?? 0
-    const critical = flagCounts['CRITICAL'] ?? 0
+    const onTrack = flagCounts['Low'] ?? 0
+    const critical = flagCounts['Critical'] ?? 0
 
     // upcoming go-lives in next 30 days
     const soon = projects.filter((p) => {
@@ -176,19 +176,22 @@ export function AnalyticsDashboard({ projects }: { projects: Project[] }) {
     }))
 
     // critical projects list
-    const criticalProjects = projects.filter((p) => p.attention_flag === 'CRITICAL' || p.attention_flag === 'HIGH')
+    const criticalProjects = projects.filter((p) => p.attention_flag === 'Critical' || p.attention_flag === 'High')
 
-    return { total, flagCounts, onTrack, critical, soon, topStages, topPMs, regionCounts, regionSlices, criticalProjects }
+    const totalValue = projects.reduce((s, p) => s + (p.project_value ?? 0), 0)
+
+    return { total, flagCounts, onTrack, critical, soon, topStages, topPMs, regionCounts, regionSlices, criticalProjects, totalValue }
   }, [projects])
 
-  const flagOrder: AttentionFlag[] = ['CRITICAL', 'HIGH', 'MONITOR', 'ON TRACK', 'ON HOLD', 'CANCELLED']
+  const flagOrder: AttentionFlag[] = ['Critical', 'High', 'Medium', 'Low', 'On Hold', 'Cancelled', 'Closed']
   const flagColors: Record<AttentionFlag, string> = {
-    CRITICAL:   '#FF4757',
-    HIGH:       '#FF6B2B',
-    MONITOR:    '#FFB800',
-    'ON TRACK': '#00c9a7',
-    'ON HOLD':  '#4A90D9',
-    CANCELLED:  '#2a4a5a',
+    Critical:  '#FF4757',
+    High:      '#FF6B2B',
+    Medium:    '#FFB800',
+    Low:       '#00c9a7',
+    'On Hold': '#4A90D9',
+    Cancelled: '#2a4a5a',
+    Closed:    '#1a5a4a',
   }
 
   return (
@@ -239,17 +242,26 @@ export function AnalyticsDashboard({ projects }: { projects: Project[] }) {
       <main className="relative max-w-[1400px] mx-auto px-6 py-8 space-y-6">
 
         {/* KPI row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <KpiCard label="Total Projects" value={stats.total} sub="across all years" accent="linear-gradient(90deg,#00c9a7,#4A90D9)" />
           <KpiCard label="Critical" value={stats.critical}
             sub={`${pct(stats.critical, stats.total)}% of portfolio`}
             accent="#FF4757" />
-          <KpiCard label="On Track" value={stats.onTrack}
-            sub={`${pct(stats.onTrack, stats.total)}% healthy`}
+          <KpiCard label="Low Risk" value={stats.onTrack}
+            sub={`${pct(stats.onTrack, stats.total)}% of portfolio`}
             accent="#00c9a7" />
           <KpiCard label="Go-Live ≤ 30 days" value={stats.soon}
             sub="upcoming launches"
             accent="#FFB800" />
+          <KpiCard
+            label="Total Portfolio Value"
+            value={stats.totalValue === 0 ? '—' : stats.totalValue >= 1_000_000_000_000
+              ? `Rp ${(stats.totalValue / 1_000_000_000_000).toFixed(2)} T`
+              : stats.totalValue >= 1_000_000_000
+              ? `Rp ${(stats.totalValue / 1_000_000_000).toFixed(2)} M`
+              : `Rp ${(stats.totalValue / 1_000_000).toFixed(2)} jt`}
+            sub="combined project value"
+            accent="linear-gradient(90deg,#f59e0b,#ef4444)" />
         </div>
 
         {/* Middle row: flag breakdown + region donut + stage bars */}

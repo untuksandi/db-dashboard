@@ -19,6 +19,7 @@ const COLUMNS = [
   { key: 'notes',          header: 'Notes',              width: 50 },
   { key: 'status',         header: 'Status',             width: 14 },
   { key: 'go_live_date',   header: 'Go-Live Date',       width: 14 },
+  { key: 'project_value', header: 'Project Value (Rp)', width: 20 },
 ] as const
 
 export async function GET() {
@@ -68,7 +69,8 @@ export async function GET() {
       ['4. Save the file and upload via the dashboard'],
       [''],
       ['YEAR values: 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 | 2027 | 2028 | 2029 | 2030'],
-      ['ATTENTION FLAG values: CRITICAL | HIGH | MONITOR | ON TRACK | CANCELLED | ON HOLD'],
+      ['PROJECT VALUE: numeric value in Rupiah, e.g. 500000000 (no formatting, digits only)'],
+      ['ATTENTION FLAG values: Critical | High | Medium | Low | Cancelled | On Hold | Closed'],
       ['STATUS values: Action Req. | Escalate | Review | Clarify | Monitor | Follow-up | Invoice | Chase | Pending | Urgent | Normal | Verify | Closed | On Hold'],
       ['GO-LIVE DATE format: YYYY-MM-DD (e.g. 2026-12-31)'],
     ])

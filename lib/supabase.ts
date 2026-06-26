@@ -18,7 +18,7 @@ export function getBrowserClient() {
   return createClient(url, anonKey)
 }
 
-export type AttentionFlag = 'CRITICAL' | 'HIGH' | 'MONITOR' | 'ON TRACK' | 'CANCELLED' | 'ON HOLD'
+export type AttentionFlag = 'Critical' | 'High' | 'Medium' | 'Low' | 'Cancelled' | 'On Hold' | 'Closed'
 
 export type ProjectStatus =
   | 'Action Req.'
@@ -78,6 +78,7 @@ export type Project = {
   notes: string
   status: ProjectStatus
   go_live_date: string | null
+  project_value: number | null
   weekly_progress_url: string | null
   risks: RiskRow[]
   phases: PhaseRow[]
@@ -95,12 +96,13 @@ export type AuditLog = {
 }
 
 export const ATTENTION_FLAGS: AttentionFlag[] = [
-  'CRITICAL',
-  'HIGH',
-  'MONITOR',
-  'ON TRACK',
-  'CANCELLED',
-  'ON HOLD',
+  'Critical',
+  'High',
+  'Medium',
+  'Low',
+  'Cancelled',
+  'On Hold',
+  'Closed',
 ]
 
 export const PROJECT_STATUSES: ProjectStatus[] = [
@@ -137,10 +139,11 @@ export const STAGES = [
 ] as const
 
 export const FLAG_META: Record<AttentionFlag, { emoji: string; color: string; bg: string; text: string }> = {
-  CRITICAL:   { emoji: '🔴', color: 'text-red-700',    bg: 'bg-red-50 border-red-200',    text: 'CRITICAL' },
-  HIGH:       { emoji: '🟠', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', text: 'HIGH' },
-  MONITOR:    { emoji: '🟡', color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200', text: 'MONITOR' },
-  'ON TRACK': { emoji: '✅', color: 'text-green-700',  bg: 'bg-green-50 border-green-200',  text: 'ON TRACK' },
-  CANCELLED:  { emoji: '⛔', color: 'text-gray-500',   bg: 'bg-gray-50 border-gray-200',   text: 'CANCELLED' },
-  'ON HOLD':  { emoji: '⏸️', color: 'text-blue-600',   bg: 'bg-blue-50 border-blue-200',   text: 'ON HOLD' },
+  Critical:   { emoji: '🔴', color: 'text-red-700',    bg: 'bg-red-50 border-red-200',       text: 'Critical' },
+  High:       { emoji: '🟠', color: 'text-orange-700', bg: 'bg-orange-50 border-orange-200', text: 'High' },
+  Medium:     { emoji: '🟡', color: 'text-yellow-700', bg: 'bg-yellow-50 border-yellow-200', text: 'Medium' },
+  Low:        { emoji: '🟢', color: 'text-green-700',  bg: 'bg-green-50 border-green-200',   text: 'Low' },
+  Cancelled:  { emoji: '⛔', color: 'text-gray-500',   bg: 'bg-gray-50 border-gray-200',     text: 'Cancelled' },
+  'On Hold':  { emoji: '⏸️', color: 'text-blue-600',   bg: 'bg-blue-50 border-blue-200',     text: 'On Hold' },
+  Closed:     { emoji: '✅', color: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200', text: 'Closed' },
 }
