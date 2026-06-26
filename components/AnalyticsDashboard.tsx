@@ -255,6 +255,7 @@ export function AnalyticsDashboard({ projects }: { projects: Project[] }) {
             accent="#FFB800" />
           <KpiCard
             label="Total Portfolio Value"
+              value="XXXXX"
             sub="combined project value"
             accent="linear-gradient(90deg,#f59e0b,#ef4444)" />
         </div>
