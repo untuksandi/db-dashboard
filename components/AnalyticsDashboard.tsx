@@ -255,11 +255,6 @@ export function AnalyticsDashboard({ projects }: { projects: Project[] }) {
             accent="#FFB800" />
           <KpiCard
             label="Total Portfolio Value"
-            value={stats.totalValue === 0 ? '—' : stats.totalValue >= 1_000_000_000_000
-              ? `Rp ${(stats.totalValue / 1_000_000_000_000).toFixed(2)} T`
-              : stats.totalValue >= 1_000_000_000
-              ? `Rp ${(stats.totalValue / 1_000_000_000).toFixed(2)} M`
-              : `Rp ${(stats.totalValue / 1_000_000).toFixed(2)} jt`}
             sub="combined project value"
             accent="linear-gradient(90deg,#f59e0b,#ef4444)" />
         </div>
