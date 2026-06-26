@@ -1,3 +1,4 @@
+HEAD
 # PSGC Project Dashboard
 
 Real-time project status dashboard for PS Global Consulting (PSGC), built on Next.js 14, Supabase, and Vercel. Tracks NetSuite implementation projects with auto-sync from ClickUp, Gmail, and Google Drive.
@@ -183,3 +184,7 @@ If any API is not configured or fails:
 - `SUPABASE_SERVICE_ROLE_KEY` is server-only — never expose to the client
 - `.env.local` is in `.gitignore` — never commit it
 - For production, consider adding Supabase Row Level Security (RLS) policies
+=======
+# db-dashboard
+Digital Business - Dashboard
+1a8991e1d147aa83035eec9ec9737e2a1ee7f87b
