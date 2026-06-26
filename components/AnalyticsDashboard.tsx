@@ -243,7 +243,7 @@ export function AnalyticsDashboard({ projects }: { projects: Project[] }) {
 
         {/* KPI row */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-          {/* <KpiCard label="Total Projects" value={stats.total} sub="across all years" accent="linear-gradient(90deg,#00c9a7,#4A90D9)" /> */}
+          <KpiCard label="Total Projects" value={stats.total} sub="across all years" accent="linear-gradient(90deg,#00c9a7,#4A90D9)" />
           <KpiCard label="Critical" value={stats.critical}
             sub={`${pct(stats.critical, stats.total)}% of portfolio`}
             accent="#FF4757" />
