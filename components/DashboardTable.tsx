@@ -409,8 +409,8 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
 
       {/* Value summary bar */}
       <div className="flex items-center gap-3 px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-sm">
-        <span className="text-teal-600 font-semibold text-xs uppercase tracking-wider">Total Project Value</span>
-        <span className="text-teal-800 font-bold text-base">{formatRupiah(totalValue)}</span>
+        //<span className="text-teal-600 font-semibold text-xs uppercase tracking-wider">Total Project Value</span>
+        //<span className="text-teal-800 font-bold text-base">{formatRupiah(totalValue)}</span>
         {hasFilters && (
           <span className="text-teal-400 text-xs ml-1">· filtered view</span>
         )}
