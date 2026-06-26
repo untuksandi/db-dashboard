@@ -421,7 +421,7 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
             <col style={{ width: '130px' }} />      {/* PM */}
             <col style={{ width: '155px' }} />      {/* Stage */}
             <col style={{ width: '110px' }} />      {/* Flag */}
-            <col style={{ width: '130px' }} />      {/* Project Value */}
+            {/* <col style={{ width: '130px' }} /> */}  {/* Project Value - hidden */}
             <col style={{ width: '200px' }} />      {/* Key Risk */}
             <col style={{ width: '96px' }} />       {/* Go-Live */}
             <col style={{ width: '88px' }} />       {/* Status */}
@@ -435,7 +435,7 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
               <SortTh label="PM"           sk="pm"           sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortTh label="Stage"        sk="stage"        sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortTh label="Flag"         sk="attention_flag" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-400">Project Value (Rp)</th>
+              {/* <th className="px-3 py-3 text-left text-xs font-semibold text-gray-400">Project Value (Rp)</th> */}
               <th className="px-3 py-3 text-left text-xs font-semibold text-gray-400">Key Risk / Issue</th>
               <SortTh label="Go-Live"      sk="go_live_date" sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
               <SortTh label="Status"       sk="status"       sortKey={sortKey} sortDir={sortDir} onSort={toggleSort} />
@@ -479,10 +479,10 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
                       onSave={(v) => handleUpdate(p.id, 'attention_flag', v)}
                     />
                   </td>
-                  <td className="px-3 py-2.5 text-xs text-teal-700 font-medium overflow-hidden">
-                    <span className="block truncate">{p.project_value ? formatRupiah(p.project_value) : '—'}</span>
-                  </td>
-                  <td className="px-3 py-2.5 text-xs text-gray-600 overflow-hidden">
+                    {/* <td className="px-3 py-2.5 text-xs text-teal-700 font-medium overflow-hidden">
+  <span className="block truncate">{p.project_value ? formatRupiah(p.project_value) : '—'}</span>
+                     </td> */} 
+                    <td className="px-3 py-2.5 text-xs text-gray-600 overflow-hidden">
                     <span className="line-clamp-2">{p.key_risk || '—'}</span>
                   </td>
                   <td className="px-3 py-2.5 text-xs font-mono text-gray-600 whitespace-nowrap">
