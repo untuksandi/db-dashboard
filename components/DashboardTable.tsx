@@ -408,14 +408,7 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
       </div>
 
       {/* Value summary bar */}
-      <div className="flex items-center gap-3 px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-sm">
-        /* 
-        hapus
-        */
-        {hasFilters && (
-          <span className="text-teal-400 text-xs ml-1">· filtered view</span>
-        )}
-      </div>
+      
 
       {/* Table */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
@@ -571,15 +564,7 @@ export function DashboardTable({ projects: initial, onUpdate, onError }: Props) 
                           </div>
                         </div>
                         {/* Project Value (editable) */}
-                        <div>
-                          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Project Value (Rp)</div>
-                          <div onClick={(e) => e.stopPropagation()}>
-                            <InlineCell
-                              value={p.project_value != null && p.project_value > 0 ? formatRupiah(p.project_value) : ''}
-                              onSave={(v) => handleUpdate(p.id, 'project_value', v ? (parseFloat(v.replace(/[^0-9]/g, '')) || null) : null)}
-                            />
-                          </div>
-                        </div>
+                        
                         {/* Last Meeting (editable) */}
                         <div>
                           <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Last Meeting / Update</div>
